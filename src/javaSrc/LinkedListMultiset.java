@@ -32,11 +32,11 @@ public class LinkedListMultiset<T extends Comparable<T>> extends Multiset<T> //e
 		// Implement completed by Tom
 		Node<T> newNode = new Node<T>(item);
 		
-		//If head is empty
+		//If head is empty, then list is empty and head reference need to be initialised.
 		if (mHead == null) {
 			mHead = newNode;
 		}
-		//else, add node to the head of list.
+		//otherwise, add node to the head of list.
 		else {
 			// scan the list to check if there is duplicate item
 			int found = 0;
@@ -95,6 +95,7 @@ public class LinkedListMultiset<T extends Comparable<T>> extends Multiset<T> //e
 		{
 			Node<T> currNode = mHead;
 			
+			
 			//check if value is head node or not
 			if(currNode.getmValue().compareTo(item) == 0) {
 				// check if length of 1
@@ -102,7 +103,7 @@ public class LinkedListMultiset<T extends Comparable<T>> extends Multiset<T> //e
 					mHead = null;
 				}
 				else {
-					if(currNode.getmNumber() == 1)
+					if(currNode.getmNumber() == 1)//found
 					{
 						mHead = currNode.getmNext();
 						//mHead.setmPrev(null);
@@ -127,15 +128,18 @@ public class LinkedListMultiset<T extends Comparable<T>> extends Multiset<T> //e
 						
 						if(currNode.getmNumber() == 1)
 						{
-							//Node prevNode = currNode.getmPrev();
-							//prevNode.setmNext(currNode.getmNext());
-							//if failed
-							if (currNode.getmNext() != null) {
-								//currNode.getmNext().setmPrev(prevNode);
-							}
-							else {
-								//mTail = prevNode;
-							}
+							/*  //doubly linked list can use this way (Tom)
+							 * 
+							 *  Node prevNode = currNode.getmPrev();
+							 *  prevNode.setmNext(currNode.getmNext());
+							 *  //if failed
+							 *  if (currNode.getmNext() != null) {
+							 *  		currNode.getmNext().setmPrev(prevNode);
+							 *  }
+							 *  else {
+							 *  		mTail = prevNode;
+							 *  }
+							 */
 							currNode = null;
 						}
 						else

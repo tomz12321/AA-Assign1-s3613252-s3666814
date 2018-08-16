@@ -1,4 +1,4 @@
-/**Implement Doubly Linked List
+/**Implement Simply Linked List
  * 
  * The operations follow the Lab_Week2 solution
  * modified the certain data type into generic
@@ -19,13 +19,11 @@ import java.util.*;
 public class LinkedListMultiset<T extends Comparable<T>> extends Multiset<T> //extends Comparable interface
 {
 	protected Node<T> mHead; //reference to head of list
-	protected Node<T> mTail; //reference to tail of list
 	protected int mLength;
 	
 	public LinkedListMultiset() {
-		// Implement me!
+		// Implement completed by Tom
 		mHead = null;
-		mTail = null;
 		mLength = 0;
 	} // end of LinkedListMultiset()
 	
@@ -37,7 +35,6 @@ public class LinkedListMultiset<T extends Comparable<T>> extends Multiset<T> //e
 		//If head is empty
 		if (mHead == null) {
 			mHead = newNode;
-			mTail = newNode;
 		}
 		//else, add node to the head of list.
 		else {
@@ -55,10 +52,14 @@ public class LinkedListMultiset<T extends Comparable<T>> extends Multiset<T> //e
 			
 			if(found < 1)
 			{
-				//if it's a empty list
-				mTail.setmNext(newNode);
-				newNode.setmPrev(mTail);
-				mTail = newNode;
+				//if it's a empty list 
+				mHead = newNode;
+	            for (int i = 0; i < mLength; ++i) {
+	                currNode = currNode.getmNext();
+	            }
+
+	            newNode.setmNext(currNode.getmNext());
+	            currNode.setmNext(newNode);
 			}
 			else
 			{
@@ -71,10 +72,20 @@ public class LinkedListMultiset<T extends Comparable<T>> extends Multiset<T> //e
 	
 	
 	public int search(T item) {
-		// Implement me!		
+		// Implement completed by Tom
+		int found = 0;
+		Node<T> currNode = mHead;
+		while (currNode != null) {
+			if(currNode.getmValue().compareTo(item) == 0) {
+				found = currNode.getmNumber();
+				return found;
+			}
+			currNode = currNode.getmNext();
+		}
 		
 		// default return, please override when you implement this method
-		return 0;
+		// return 0;
+		return found;
 	} // end of add()
 	
 	
@@ -88,13 +99,13 @@ public class LinkedListMultiset<T extends Comparable<T>> extends Multiset<T> //e
 			if(currNode.getmValue().compareTo(item) == 0) {
 				// check if length of 1
 				if (mLength == 1) {
-					mHead = mTail = null;
+					mHead = null;
 				}
 				else {
 					if(currNode.getmNumber() == 1)
 					{
 						mHead = currNode.getmNext();
-						mHead.setmPrev(null);
+						//mHead.setmPrev(null);
 						currNode = null;
 					}
 					else 
@@ -116,14 +127,14 @@ public class LinkedListMultiset<T extends Comparable<T>> extends Multiset<T> //e
 						
 						if(currNode.getmNumber() == 1)
 						{
-							Node prevNode = currNode.getmPrev();
-							prevNode.setmNext(currNode.getmNext());
+							//Node prevNode = currNode.getmPrev();
+							//prevNode.setmNext(currNode.getmNext());
 							//if failed
 							if (currNode.getmNext() != null) {
-								currNode.getmNext().setmPrev(prevNode);
+								//currNode.getmNext().setmPrev(prevNode);
 							}
 							else {
-								mTail = prevNode;
+								//mTail = prevNode;
 							}
 							currNode = null;
 						}
@@ -148,14 +159,13 @@ public class LinkedListMultiset<T extends Comparable<T>> extends Multiset<T> //e
 		if (currNode.getmValue().compareTo(item) == 0) {
 			//check if length of 1
 			if (mLength == 1) {
-				mHead = mTail = null;
+				mHead = null;
 				mLength--;
 			}
 			else {
 				int number = currNode.getmNumber();
 				mLength -= number;
 				mHead = currNode.getmNext();
-				mHead.setmPrev(null);
 				currNode = null;	
 			}
 		}
@@ -167,12 +177,7 @@ public class LinkedListMultiset<T extends Comparable<T>> extends Multiset<T> //e
 				if (currNode.getmValue().compareTo(item) == 0) {
 					int number = currNode.getmNumber();
 					mLength -= number;
-					Node prevNode = currNode.getmPrev();
-					prevNode.setmNext(currNode.getmNext());
-					//check if tail
-					if(currNode.getmNext() != null) {
-						currNode.getmNext().setmPrev(prevNode);
-					}
+
 					currNode = null;
 				}
 				else
@@ -211,13 +216,11 @@ public class LinkedListMultiset<T extends Comparable<T>> extends Multiset<T> //e
 	{
 		private T mValue; //stored value of node
 		private Node<T> mNext; //reference to next node
-		private Node<T> mPrev; // stored value of the same value
-		private int mNumber;
+		private int mNumber; //found number
 		
 		public Node(T value) {
 			mValue = value;
 			mNext = null;
-			mPrev = null;
 			mNumber = 1;
 		}
 		public T getmValue() {
@@ -234,14 +237,6 @@ public class LinkedListMultiset<T extends Comparable<T>> extends Multiset<T> //e
 
 		public void setmNext(Node<T> mNext) {
 			this.mNext = mNext;
-		}
-
-		public Node<T> getmPrev() {
-			return mPrev;
-		}
-
-		public void setmPrev(Node<T> mPrev) {
-			this.mPrev = mPrev;
 		}
 
 		// return found number

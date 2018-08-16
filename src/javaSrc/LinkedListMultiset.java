@@ -141,7 +141,44 @@ public class LinkedListMultiset<T extends Comparable<T>> extends Multiset<T> //e
 	
 	
 	public void removeAll(T item) {
-		// Implement me!
+		// Implement completed by Tom
+		Node<T> currNode = mHead;
+		
+		//check if value is head node
+		if (currNode.getmValue().compareTo(item) == 0) {
+			//check if length of 1
+			if (mLength == 1) {
+				mHead = mTail = null;
+				mLength--;
+			}
+			else {
+				int number = currNode.getmNumber();
+				mLength -= number;
+				mHead = currNode.getmNext();
+				mHead.setmPrev(null);
+				currNode = null;	
+			}
+		}
+		// search for value in rest of list
+		else {
+			currNode = currNode.getmNext();
+			
+			while (currNode != null) {
+				if (currNode.getmValue().compareTo(item) == 0) {
+					int number = currNode.getmNumber();
+					mLength -= number;
+					Node prevNode = currNode.getmPrev();
+					prevNode.setmNext(currNode.getmNext());
+					//check if tail
+					if(currNode.getmNext() != null) {
+						currNode.getmNext().setmPrev(prevNode);
+					}
+					currNode = null;
+				}
+				else
+					currNode = currNode.getmNext();
+			}
+		}
 	} // end of removeAll()
 	
 	

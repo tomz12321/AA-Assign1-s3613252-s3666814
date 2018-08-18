@@ -1,5 +1,3 @@
-package javaSrc;
-
 import java.io.*;
 import java.util.*;
 

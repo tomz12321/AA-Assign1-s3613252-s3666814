@@ -11,7 +11,6 @@
  * Author : Jyh-woei Yang (s3613252) (Tom)
  */
 
-package javaSrc;
 
 import java.io.PrintStream;
 import java.util.*;

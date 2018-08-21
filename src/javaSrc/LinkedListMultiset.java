@@ -1,4 +1,4 @@
-/**Implement Simply Linked List
+/**Implement singly Linked List
  * 
  * The operations follow the Lab_Week2 solution
  * modified the certain data type into generic
@@ -8,255 +8,287 @@
  * - removeAll
  * - print
  * 
- * Author : Jyh-woei Yang (s3613252) (Tom)
+ * Author : Jyh Woei Yang (s3613252) (Tom)
  */
-
 
 import java.io.PrintStream;
 import java.util.*;
 
 public class LinkedListMultiset<T extends Comparable<T>> extends Multiset<T> //extends Comparable interface
 {
-	protected Node<T> mHead; //reference to head of list
-	protected int mLength;
-	
+	/** Reference to head of list. */
+    protected Node<T> mHead;
+    /** Reference to tail of list. */
+    protected Node<T> mTail;
+    /** Length of list. */
+    protected int mLength;
+    
 	public LinkedListMultiset() {
-		// Implement completed by Tom
-		mHead = null;
-		mLength = 0;
+		// Implement by Tom Yang
+		mHead = null; 
+        mTail = null;
+        mLength = 0;
 	} // end of LinkedListMultiset()
 	
-	
+	/**
+     * Add a new value to the start of the list.
+     * (AddLast) 
+     * @param newValue Value to add to list.
+     */
 	public void add(T item) {
-		// Implement completed by Tom
-		Node<T> newNode = new Node<T>(item);
-		
-		//If head is empty, then list is empty and head reference need to be initialised.
-		if (mHead == null) {
-			mHead = newNode;
-		}
-		//otherwise, add node to the head of list.
-		else {
-			// scan the list to check if there is duplicate item
-			int found = 0;
-			Node<T> currNode = mHead;
-			while (currNode != null) {
-				if (currNode.getmValue().compareTo(item) == 0) {
-					currNode.increaseFound();
-					found = currNode.getmNumber();
-					break;
-				}
-				currNode = currNode.getmNext();
-			}
-			
-			if(found < 1)
-			{
-				//if it's a empty list 
-				mHead = newNode;
-	            for (int i = 0; i < mLength; ++i) {
-	                currNode = currNode.getmNext();
-	            }
-
-	            newNode.setmNext(currNode.getmNext());
-	            currNode.setmNext(newNode);
-			}
-			else
-			{
-				newNode = null;
-			}
-		}
-		
-		mLength++;
+		// Implement by Tom Yang
+        Node<T> newNode = new Node<T>(item);
+        
+        // If head is empty, then list is empty and head and tail references need to be initialised.
+        if (mHead == null) {
+            mHead = newNode;
+            mTail = newNode;
+        }
+        // otherwise, add node to the head of list.
+        else {
+        	// scan the list to check is there having duplicate item
+        	int found = 0;
+    		Node<T> currNode = mHead;
+    		while (currNode != null) {
+            	if (currNode.getValue().compareTo(item) == 0) {
+            		currNode.increaseFound();
+            		found = currNode.getFound();
+            		break;
+            	}
+                currNode = currNode.getNext();
+            }
+            
+        	if(found < 1)
+        	{
+        		mTail.setNext(newNode);
+        		newNode.setPrev(mTail);
+        		mTail = newNode;
+        	}
+        	else
+        	{
+        		newNode = null;
+        	}
+        }
+        
+        mLength++;
 	} // end of add()
 	
-	
+	/**
+     * Returns the times that the item value is founded in list.
+     * 
+     * @param item Value to search for.
+     * @return the found variable which present how many times the value is found.
+     */
 	public int search(T item) {
-		// Implement completed by Tom
+		// Implement by Tom Yang
 		int found = 0;
 		Node<T> currNode = mHead;
-		while (currNode != null) {
-			if(currNode.getmValue().compareTo(item) == 0) {
-				found = currNode.getmNumber();
-				return found;
-			}
-			currNode = currNode.getmNext();
-		}
+        while (currNode != null) {
+        	if (currNode.getValue().compareTo(item) == 0) {
+        		found = currNode.getFound();
+        		return found;
+        	}
+            currNode = currNode.getNext();
+        }
 		
-		// default return, please override when you implement this method
-		// return 0;
+		// return the found variable
 		return found;
-	} // end of add()
+	} // end of search()
 	
-	
+	/**
+     * Delete given value from list (delete first instance found).
+     *   
+     * @param item Value to remove.
+     */
 	public void removeOne(T item) {
-		// Implement completed by Tom
 		if(mHead != null)
 		{
 			Node<T> currNode = mHead;
-			
-			
-			//check if value is head node or not
-			if(currNode.getmValue().compareTo(item) == 0) {
-				// check if length of 1
-				if (mLength == 1) {
-					mHead = null;
-				}
-				else {
-					if(currNode.getmNumber() == 1)//found
-					{
-						mHead = currNode.getmNext();
-						//mHead.setmPrev(null);
-						currNode = null;
-					}
-					else 
-						currNode.decreaseFound();
-				}
-				mLength--;
-				
-			}
-			
-			//search for value in the rest of list
-			else {
-				currNode = currNode.getmNext();
-				
-				while (currNode != null) {
-					if (currNode.getmValue().compareTo(item) == 0) {
-						//check number
-						if(currNode.getmNumber() <= 0)
-							break;
-						
-						if(currNode.getmNumber() == 1)
-						{
-							/*  //doubly linked list can use this way (Tom)
-							 * 
-							 *  Node prevNode = currNode.getmPrev();
-							 *  prevNode.setmNext(currNode.getmNext());
-							 *  //if failed
-							 *  if (currNode.getmNext() != null) {
-							 *  		currNode.getmNext().setmPrev(prevNode);
-							 *  }
-							 *  else {
-							 *  		mTail = prevNode;
-							 *  }
-							 */
-							currNode = null;
-						}
-						else
-							currNode.decreaseFound();
-						mLength--;
-						break;
-					}
-					else
-						currNode = currNode.getmNext();
-				}
-			}
+
+			// check if value is head node
+	        if (currNode.getValue().compareTo(item) == 0) {
+	            // check if length of 1
+	            if (mLength == 1) {
+	                mHead = mTail= null;
+	            }
+	            else {
+	            	if(currNode.getFound() == 1)
+	            	{
+	            		mHead = currNode.getNext();
+	            		mHead.setPrev(null);
+	            		currNode = null;
+	            	}
+	            	else
+	            		currNode.decreaseFound();
+	            }
+	            
+	            mLength--;
+	        }
+	        // search for value in rest of list
+	        else {
+	            currNode = currNode.getNext();
+
+	            while (currNode != null) {
+	                if (currNode.getValue().compareTo(item) == 0) {
+	                	// check the number 
+	                	if(currNode.getFound() <= 0)
+	                		break;
+	                	
+	                	if(currNode.getFound() == 1)
+	                	{
+	                		Node prevNode = currNode.getPrev();
+	                        prevNode.setNext(currNode.getNext());
+	                        // check if tail
+	                        if (currNode.getNext() != null) {
+	                        	currNode.getNext().setPrev(prevNode);
+	                        }
+	                        else {
+	                        	mTail = prevNode;
+	                        }
+	                        currNode = null;
+	                	}
+	                	else
+	                		currNode.decreaseFound();
+	                    mLength--;
+	                    break;
+	                }
+	                else
+	                	currNode = currNode.getNext();
+	            }	
+	        }
 		}
 	} // end of removeOne()
 	
 	
 	public void removeAll(T item) {
-		// Implement completed by Tom
+		// Implement by Tom Yang
 		Node<T> currNode = mHead;
-		
-		//check if value is head node
-		if (currNode.getmValue().compareTo(item) == 0) {
-			//check if length of 1
-			if (mLength == 1) {
-				mHead = null;
-				mLength--;
-			}
-			else {
-				int number = currNode.getmNumber();
-				mLength -= number;
-				mHead = currNode.getmNext();
-				currNode = null;	
-			}
-		}
-		// search for value in rest of list
-		else {
-			currNode = currNode.getmNext();
-			
-			while (currNode != null) {
-				if (currNode.getmValue().compareTo(item) == 0) {
-					int number = currNode.getmNumber();
-					mLength -= number;
 
-					currNode = null;
-				}
-				else
-					currNode = currNode.getmNext();
-			}
-		}
+		// check if value is head node
+        if (currNode.getValue().compareTo(item) == 0) {
+            // check if length of 1
+            if (mLength == 1) {
+                mHead = mTail = null;
+                mLength--;
+            }
+            else {
+            	int number = currNode.getFound();
+            	mLength -= number;
+            	mHead = currNode.getNext();
+            	mHead.setPrev(null);
+            	currNode = null;
+            }
+        }
+        // search for value in rest of list
+        else {
+            currNode = currNode.getNext();
+
+            while (currNode != null) {
+                if (currNode.getValue().compareTo(item) == 0) {
+                	int number = currNode.getFound();
+                	mLength -= number;
+                	Node prevNode = currNode.getPrev();
+                    prevNode.setNext(currNode.getNext());
+                    // check if tail
+                    if (currNode.getNext() != null) {
+                    	currNode.getNext().setPrev(prevNode);
+                    }
+                    else {
+                    	mTail = prevNode;
+                    }
+                    currNode = null;
+                }
+                else
+                	currNode = currNode.getNext();
+            }	
+        }
 	} // end of removeAll()
 	
-	
+	/**
+     * Print the list in head to tail.
+     */
 	public void print(PrintStream out) {
-		// Implement completed by Tom
+		// Implement by Tom Yang
 		out.println(toString());
 	} // end of print()
 	
 	/**
-	 *  @return String representation of the list.
-	 */
-	public String toString() {
-		Node<T> currNode = mHead;
-		
-		StringBuffer str = new StringBuffer();
-		int found = 0;
-		
-		while (currNode != null) {
-			str.append(currNode.getmValue() + printDelim + currNode.getmNumber() + "\n");
-			currNode = currNode.getmNext();
-		}
-		
-		return str.toString();
-	}
-	
+     * @return String representation of the list.
+     */
+    public String toString() {
+        Node<T> currNode = mHead;
+
+        StringBuffer str = new StringBuffer();
+        int found = 0;
+
+        while (currNode != null) {
+        	str.append(currNode.getValue() + printDelim + currNode.getFound() + "\n");
+            currNode = currNode.getNext();
+        }
+
+        return str.toString();
+    } // end of toString();
+    
 	/**
-	 * Node type, inner private class. 
-	 */
-	private class Node<T>
-	{
-		private T mValue; //stored value of node
-		private Node<T> mNext; //reference to next node
-		private int mNumber; //found number
-		
-		public Node(T value) {
-			mValue = value;
-			mNext = null;
-			mNumber = 1;
-		}
-		public T getmValue() {
-			return mValue;
-		}
+     * Node type, inner private class.
+     */
+    private class Node<T>
+    {
+        /** Stored value of node. */
+        private T mValue;
+        /** Reference to next node. */
+        private Node<T> mNext;
+        /** Reference to previous node. */
+        private Node<T> mPrev;
+        /** Stored value of the same value. */
+        private int mNumber;
 
-		public void setmValue(T mValue) {
-			this.mValue = mValue;
-		}
+        public Node(T value) {
+            mValue = value;
+            mNext = null;
+            mPrev = null;
+            mNumber = 1;
+        }
 
-		public Node<T> getmNext() {
-			return mNext;
-		}
+        public T getValue() {
+            return mValue;
+        }
 
-		public void setmNext(Node<T> mNext) {
-			this.mNext = mNext;
-		}
 
-		// return found number
-		public int getmNumber() {
-			return mNumber;
-		}
+        public Node<T> getNext() {
+            return mNext;
+        }
+        
+        
+        public Node<T> getPrev() {
+            return mPrev;
+        }
+        
+        public int getFound() {
+        	return mNumber;
+        }
 
-		public void setmNumber(int mNumber) {
-			this.mNumber = mNumber;
-		}
-		
-		public void increaseFound() {
-			mNumber++;
-		}
-		public void decreaseFound() {
-			mNumber--;
-		}
-	} // end of inner class Node
+
+        public void setValue(T value) {
+            mValue = value;
+        }
+
+
+        public void setNext(Node<T> next) {
+            mNext = next;
+        }
+        
+        public void setPrev(Node<T> prev) {
+            mPrev = prev;
+        }
+        
+        public void increaseFound() {
+        	mNumber++;
+        }
+        
+        public void decreaseFound() {
+        	mNumber--;
+        }
+    } // end of inner class Node
 	
 } // end of class LinkedListMultiset

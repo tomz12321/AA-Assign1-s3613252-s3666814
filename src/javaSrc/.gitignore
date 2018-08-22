@@ -1,4 +1,4 @@
-#Java + Eclipse ignores
+# Java + Eclipse ignores
 
 # Compiled class file
 *.class
@@ -36,8 +36,3 @@ hs_err_pid*
 # Undo-tree save-files
 *.~undo-tree
 
-*.class
-
-*.class
-
-*.class

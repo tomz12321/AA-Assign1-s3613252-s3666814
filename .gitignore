@@ -36,6 +36,3 @@ hs_err_pid*
 # Undo-tree save-files
 *.~undo-tree
 
-*.class
-
-*.class

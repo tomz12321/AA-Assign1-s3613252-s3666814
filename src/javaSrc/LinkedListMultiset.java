@@ -61,7 +61,8 @@ public class LinkedListMultiset<T extends Comparable<T>> extends Multiset<T> //e
         	if(found < 1)
         	{
         		mTail.setNext(newNode);
-        		newNode.setPrev(mTail);
+        		//marked out for singly linkedlist
+        		//newNode.setPrev(mTail);
         		mTail = newNode;
         	}
         	else
@@ -102,69 +103,81 @@ public class LinkedListMultiset<T extends Comparable<T>> extends Multiset<T> //e
      */
 	public void removeOne(T item) {
 		if(mHead != null)
-		{
-			Node<T> currNode = mHead;
+        {
+            Node<T> currNode = mHead;
 
-			// check if value is head node
-	        if (currNode.getValue().compareTo(item) == 0) {
-	            // check if length of 1
-	            if (mLength == 1) {
-	                mHead = mTail= null;
-	            }
-	            else {
-	            	if(currNode.getFound() == 1)
-	            	{
-	            		mHead = currNode.getNext();
-	            		mHead.setPrev(null);
-	            		currNode = null;
-	            	}
-	            	else
-	            		currNode.decreaseFound();
-	            }
-	            
-	            mLength--;
-	        }
-	        // search for value in rest of list
-	        else {
-	            currNode = currNode.getNext();
+            // check if value is head node
+            // if (currNode.getValue().compareTo(item) == 0) { //double linkedlist
+            if (currNode.getValue().compareTo(item) == 0) {
+                // check if length of 1
+                if (mLength == 1) {
+                    mHead = mTail = null;
+                }
+                else {
+                    if(currNode.getFound() == 1)
+                    {
+                        mHead = currNode.getNext();
+                        //marked out for singly linkedlist
+                        //mHead.setPrev(null);
+                        currNode = null;
+                    }
+                    else
+                        currNode.decreaseFound();
+                }
+                
+                mLength--;
+            }
+            // search for value in rest of list
+            else {
+                //new
+                Node prevNode = currNode;
+                currNode = currNode.getNext();
 
-	            while (currNode != null) {
-	                if (currNode.getValue().compareTo(item) == 0) {
-	                	// check the number 
-	                	if(currNode.getFound() <= 0)
-	                		break;
-	                	
-	                	if(currNode.getFound() == 1)
-	                	{
-	                		Node prevNode = currNode.getPrev();
-	                        prevNode.setNext(currNode.getNext());
-	                        // check if tail
-	                        if (currNode.getNext() != null) {
-	                        	currNode.getNext().setPrev(prevNode);
-	                        }
-	                        else {
-	                        	mTail = prevNode;
-	                        }
-	                        currNode = null;
-	                	}
-	                	else
-	                		currNode.decreaseFound();
-	                    mLength--;
-	                    break;
-	                }
-	                else
-	                	currNode = currNode.getNext();
-	            }	
-	        }
-		}
+                while (currNode != null) {
+                    if (currNode.getValue().compareTo(item) == 0) { //double linkedlist
+                    //if (currNode.getNext().getValue().compareTo(item) == 0) {
+                        // check the number 
+                        if(currNode.getFound() <= 0)
+                            break;
+                        
+                        if(currNode.getFound() == 1)
+                        {
+                            //marked out for singly linkedlist
+                            //Node prevNode = currNode.getPrev();
+                            prevNode.setNext(currNode.getNext());
+                            
+                            // check if tail
+                            if (currNode.getNext() != null) {
+                                //marked out for singly linkedlist
+                                //currNode.getNext().setPrev(prevNode);
+                            }
+                            else {
+                                mTail = prevNode;
+                            }
+                            currNode = null;
+                        }
+                        else
+                            currNode.decreaseFound();
+                        mLength--;
+                        break;
+                    }
+                    else
+                    {
+                        //new
+                        prevNode = currNode;
+                        currNode = currNode.getNext();
+                    }
+                }   
+            }
+        }
 	} // end of removeOne()
 	
 	
 	public void removeAll(T item) {
 		// Implement by Tom Yang
-		Node<T> currNode = mHead;
+        Node<T> currNode = mHead;
 
-		// check if value is head node
+        // check if value is head node
         if (currNode.getValue().compareTo(item) == 0) {
             // check if length of 1
             if (mLength == 1) {
@@ -172,35 +185,44 @@ public class LinkedListMultiset<T extends Comparable<T>> extends Multiset<T> //e
                 mLength--;
             }
             else {
-            	int number = currNode.getFound();
-            	mLength -= number;
-            	mHead = currNode.getNext();
-            	mHead.setPrev(null);
-            	currNode = null;
+                int number = currNode.getFound();
+                mLength -= number;
+                mHead = currNode.getNext();
+                //marked out for singly linkedlist
+                //mHead.setPrev(null);
+                currNode = null;
             }
         }
         // search for value in rest of list
         else {
+            Node prevNode = currNode;
             currNode = currNode.getNext();
 
             while (currNode != null) {
                 if (currNode.getValue().compareTo(item) == 0) {
-                	int number = currNode.getFound();
-                	mLength -= number;
-                	Node prevNode = currNode.getPrev();
+                    int number = currNode.getFound();
+                    mLength -= number;
+                    //marked out for singly linkedlist
+                    //Node prevNode = currNode.getPrev();
                     prevNode.setNext(currNode.getNext());
+                    
                     // check if tail
                     if (currNode.getNext() != null) {
-                    	currNode.getNext().setPrev(prevNode);
+                        //marked out for singly linkedlist
+                        //currNode.getNext().setPrev(prevNode);
                     }
                     else {
-                    	mTail = prevNode;
+                        mTail = prevNode;
                     }
                     currNode = null;
                 }
                 else
-                	currNode = currNode.getNext();
-            }	
+                    {
+                        //new
+                        prevNode = currNode;
+                        currNode = currNode.getNext();
+                    }
+            }   
         }
 	} // end of removeAll()
 	
@@ -239,14 +261,16 @@ public class LinkedListMultiset<T extends Comparable<T>> extends Multiset<T> //e
         /** Reference to next node. */
         private Node<T> mNext;
         /** Reference to previous node. */
-        private Node<T> mPrev;
+        //marked out for singly linkedlist
+        //private Node<T> mPrev;
         /** Stored value of the same value. */
         private int mNumber;
 
         public Node(T value) {
             mValue = value;
             mNext = null;
-            mPrev = null;
+          //marked out for singly linkedlist
+            //mPrev = null;
             mNumber = 1;
         }
 
@@ -260,9 +284,10 @@ public class LinkedListMultiset<T extends Comparable<T>> extends Multiset<T> //e
         }
         
         
-        public Node<T> getPrev() {
-            return mPrev;
-        }
+        //marked out for singly linkedlist
+        //public Node<T> getPrev() {
+        //    return mPrev;
+        //}
         
         public int getFound() {
         	return mNumber;
@@ -278,9 +303,10 @@ public class LinkedListMultiset<T extends Comparable<T>> extends Multiset<T> //e
             mNext = next;
         }
         
-        public void setPrev(Node<T> prev) {
-            mPrev = prev;
-        }
+        //marked out for singly linkedlist
+        //public void setPrev(Node<T> prev) {
+        //    mPrev = prev;
+        //}
         
         public void increaseFound() {
         	mNumber++;

@@ -7,7 +7,7 @@
  * - removeAll
  * - print
  * 
- * Author : Jyh Woei Tom Yang (s3613252) 
+ * Author : Jyh Woei Tom Yang (s3613252) 09/09/2018
  */
 import java.io.PrintStream;
 import java.util.*;
@@ -39,7 +39,6 @@ public class SortedLinkedListMultiset<T extends Comparable<T>> extends Multiset<
 		Node<T> newNode = new Node<T>(item);
 		
 		//If head is empty, then list is empty and head reference need to be initialised.
-		//if (mHead == null || item.compareTo(mHead.getValue()) < 0 )
 		if (mHead == null) {
 			mHead = newNode;
 			mTail = newNode;
@@ -57,20 +56,13 @@ public class SortedLinkedListMultiset<T extends Comparable<T>> extends Multiset<
             		{
             			// addBefore
             			newNode.setmNext(mHead);
-            			//mark out for singly linkedlist    
-            			//mHead.setmPrev(newNode);
                     	mHead = newNode;
                     	break;
             		}
             		else
             		{
-            			//mark out for singly linkedlist
-            			//newNode.setmPrev(currNode.getmPrev());
             			newNode.setmNext(currNode);
-            			//mark out for singly linkedlist
-            			//currNode.getmPrev().setmNext(newNode);
             			prevNode.setmNext(newNode);
-            			//currNode.setmPrev(newNode);
             			break;
             		}
             	}
@@ -80,8 +72,6 @@ public class SortedLinkedListMultiset<T extends Comparable<T>> extends Multiset<
             		{
             			// addLast
             			currNode.setmNext(newNode);
-            			//mark out for singly linkedlist
-            			//newNode.setmPrev(currNode);
             			mTail = newNode;
             			break;
             		}
@@ -91,7 +81,6 @@ public class SortedLinkedListMultiset<T extends Comparable<T>> extends Multiset<
             		break;
             	}
             	//new
-            	//prevNode = currNode;
             	currNode = currNode.getmNext();
             }  
 		}
@@ -133,8 +122,6 @@ public class SortedLinkedListMultiset<T extends Comparable<T>> extends Multiset<
 				if(currNode.getmNumber() == 1)
 				{
 					mHead = currNode.getmNext();
-					//marked out for singly linkedlist
-					//mHead.setmPrev(null);
 			        currNode = null;
 			    }
 			    else
@@ -149,43 +136,40 @@ public class SortedLinkedListMultiset<T extends Comparable<T>> extends Multiset<
 			         Node prevNode = null;
                 	 currNode = currNode.getmNext();
 
-			         while (currNode != null) {
-			         if (currNode.getmValue().compareTo(item) == 0) {
-			         // check the number
-			         if(currNode.getmNumber() <= 0)
-			        	 	break;
-			                	
-			         if(currNode.getmNumber() == 1)
+			         while (currNode != null) 
 			         {
-			        	 	//marked out for singly linkedlist
-			        	 	//Node prevNode = currNode.getmPrev();
-			         		prevNode = currNode;
-			        	 	//prevNode.setmNext(currNode.getmNext());
-			        	 	prevNode.setmNext(currNode.getmNext());
-			            // check if tail
-			            if (currNode.getmNext() != null) {
-			            	//marked out for singly linkedlist
-			            	//currNode.getmNext().setmPrev(prevNode);
-			            	prevNode = currNode;
-			            }
-			            else {
-			            		//marked out for singly linkedlist
-			            		//mTail = prevNode;
-			            		mTail = currNode;
-			            }
-			                currNode = null;
-			         }
-			         else
-			            currNode.decreaseFound();
-			         mLength--;
-			         break;
-			         }
-			         else
-			         {
-			         	    //new
-                        	prevNode = currNode;
-			        	 	currNode = currNode.getmNext();
-			         }
+				         if (currNode.getmValue().compareTo(item) == 0) 
+				         {
+					         // check the number
+					         if(currNode.getmNumber() <= 0)
+					        	 	break;
+					                	
+					         if(currNode.getmNumber() == 1)
+					         {
+					         	prevNode = currNode;
+					        	prevNode.setmNext(currNode.getmNext());
+					            // check if tail
+					            if (currNode.getmNext() != null) 
+					            {
+					            	prevNode = currNode;
+					            }
+					            else 
+					            {
+					            		mTail = currNode;
+					            }
+					            currNode = null;
+				         	}
+				        	else
+				            	currNode.decreaseFound();
+				         	mLength--;
+				         	break;
+				         }
+				         else
+				         {
+				         	    //new
+	                        	prevNode = currNode;
+				        	 	currNode = currNode.getmNext();
+				         }
 			        }	
 			    }
 			}
@@ -207,8 +191,6 @@ public class SortedLinkedListMultiset<T extends Comparable<T>> extends Multiset<
             	int number = currNode.getmNumber();
             	mLength -= number;
             	mHead = currNode.getmNext();
-            	//marked out for singly linked list
-            	//mHead.setmPrev(null);
             	currNode = null;
             }
         }
@@ -218,22 +200,17 @@ public class SortedLinkedListMultiset<T extends Comparable<T>> extends Multiset<
             currNode = currNode.getmNext();
 
             while (currNode != null) {
-                if (currNode.getmValue().compareTo(item) == 0) {
+                if (currNode.getmValue().compareTo(item) == 0) 
+                {
                 	int number = currNode.getmNumber();
                 	mLength -= number;
-                	//marked out for singly linked list
-                	//Node prevNode = currNode.getmPrev();
                     prevNode.setmNext(currNode.getmNext());
                 	
                     // check if tail
                     if (currNode.getmNext() != null) {
-                    	//marked out for singly linked list
-                    	//currNode.getmNext().setmPrev(prevNode);
                     	prevNode = currNode;
                     }
                     else {
-                    	//marked out for singly linked list
-                    	//mTail = prevNode;
                     	mTail = currNode;
                     }
                     currNode = null;
@@ -279,14 +256,10 @@ public class SortedLinkedListMultiset<T extends Comparable<T>> extends Multiset<
 	{
 		private T mValue; //stored value of node
 		private Node<T> mNext; //reference to next node.
-		//mark out for singly linkedlist
-		//private Node<T> mPrev; //reference to previous node.
 		private int mNumber; //found number
 		
 		public Node(T value) {
 			mValue = value;
-			//mark out for singly linkedlist
-			//mPrev = null; //previous node.
 			mNext = null;
 			mNumber = 1;
 		}
@@ -301,22 +274,10 @@ public class SortedLinkedListMultiset<T extends Comparable<T>> extends Multiset<
 		public Node<T> getmNext() {
 			return mNext;
 		}
-		
-		//get Previous node
-		//mark out for singly linkedlist
-        //public Node<T> getmPrev() {
-        //    return mPrev;
-        //}
 
 		public void setmNext(Node<T> mNext) {
 			this.mNext = mNext;
 		}
-		
-		//mark out for singly linkedlist
-		// set Previous node
-        //public void setmPrev(Node<T> prev) {
-        //    mPrev = prev;
-        //}
 
 		// return found number
 		public int getmNumber() {
